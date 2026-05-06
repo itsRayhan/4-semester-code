@@ -2,15 +2,14 @@
 using namespace std;
 int main()
 {
-    int n;
-    int sum = 0;
 
+    int n, fact = 1;
     cin >> n;
+
     for (int i = 1; i <= n; i++)
     {
-        sum = sum + n;
+        fact = fact * i;
     }
-    cout << "sum of=" << sum << endl;
-
+    cout << "fact=" << fact << endl;
     return 0;
 }
