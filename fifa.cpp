@@ -22,7 +22,7 @@ int main()
 
     cout << "\nSearching database..." << endl;
 
-    this_thread::sleep_for(chrono::seconds(5));
+    this_thread::sleep_for(chrono::seconds(10));
 
     cout << "Oops! Something unexpected appeared!\n"
          << endl;
