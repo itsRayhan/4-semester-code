@@ -22,7 +22,7 @@ void readFile(const string &filename)
 
 int main()
 {
-    string filename;
+    string filename; 
 
     cout << "Enter filename to open: ";
     cin >> filename;
