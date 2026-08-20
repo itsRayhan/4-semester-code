@@ -11,8 +11,8 @@ public:
     person()
     {
         cout << "Name: ";
-        cin >> name ;
-        cout << "age: " ;
+        cin >> name;
+        cout << "age: ";
         cin >> age;
     }
     void displayperson()
@@ -30,10 +30,10 @@ private:
 public:
     employee()
     {
-        cout << "id: " ;
-        cin >> id ;
-        cout << "salary: " ;
-        cin >> salary ;
+        cout << "id: ";
+        cin >> id;
+        cout << "salary: ";
+        cin >> salary;
     }
     void displayemployee()
     {
