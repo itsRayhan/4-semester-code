@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Found Items | CampusFind</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        .navbar {
+            background: white;
+            height: 70px;
+            padding: 0 8%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+
+        .login-btn {
+            background: #2563eb;
+            color: white !important;
+            padding: 10px 18px;
+            border-radius: 8px;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 60px 20px 35px;
+        }
+
+        .page-header h1 {
+            font-size: 38px;
+            color: #16a34a;
+        }
+
+        .page-header p {
+            color: #64748b;
+            margin-top: 12px;
+            font-size: 17px;
+        }
+
+        .items-container {
+            max-width: 1100px;
+            margin: 0 auto 70px;
+            padding: 0 20px;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .item-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+            transition: 0.2s;
+        }
+
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        }
+
+        .item-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #e5e7eb;
+        }
+
+        .no-image {
+            height: 200px;
+            background: #f0fdf4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 55px;
+        }
+
+        .item-content {
+            padding: 22px;
+        }
+
+        .item-content h2 {
+            font-size: 21px;
+            margin-bottom: 12px;
+        }
+
+        .category {
+            display: inline-block;
+            background: #dcfce7;
+            color: #15803d;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .item-info {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .description {
+            margin-top: 12px;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .status {
+            margin-top: 15px;
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .empty {
+            background: white;
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .empty-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .empty h2 {
+            margin-bottom: 10px;
+        }
+
+        .empty p {
+            color: #64748b;
+        }
+
+        .report-btn {
+            display: inline-block;
+            margin-top: 20px;
+            background: #16a34a;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer {
+            background: #111827;
+            color: #d1d5db;
+            text-align: center;
+            padding: 30px;
+        }
+
+        footer strong {
+            color: white;
+        }
+
+        @media (max-width: 850px) {
+
+            .items-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 550px) {
+
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🎓 CampusFind
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{% url 'home' %}">
+                Home
+            </a>
+
+            <a href="{% url 'lost_items' %}">
+                Lost Items
+            </a>
+
+            <a href="{% url 'found_items' %}">
+                Found Items
+            </a>
+
+            <a href="#">
+                Smart Match
+            </a>
+
+            {% if user.is_authenticated %}
+
+                <span>
+                    👤 {{ user.username }}
+                </span>
+
+                <a href="{% url 'logout' %}" class="login-btn">
+                    Logout
+                </a>
+
+            {% else %}
+
+                <a href="{% url 'login' %}" class="login-btn">
+                    Login
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </nav>
+
+
+    <!-- HEADER -->
+
+    <section class="page-header">
+
+        <h1>📦 Found Items</h1>
+
+        <p>
+            Browse items found around the campus.
+        </p>
+
+    </section>
+
+
+    <!-- ITEMS -->
+
+    <div class="items-container">
+
+        {% if items %}
+
+            <div class="items-grid">
+
+                {% for item in items %}
+
+                    <div class="item-card">
+
+                        {% if item.image %}
+
+                            <img
+                                src="{{ item.image.url }}"
+                                alt="{{ item.title }}"
+                                class="item-image"
+                            >
+
+                        {% else %}
+
+                            <div class="no-image">
+                                📦
+                            </div>
+
+                        {% endif %}
+
+                        <div class="item-content">
+
+                            <h2>
+                                {{ item.title }}
+                            </h2>
+
+                            <span class="category">
+                                {{ item.category }}
+                            </span>
+
+                            <div class="item-info">
+
+                                📍 {{ item.location }}<br>
+
+                                📅 {{ item.date }}<br>
+
+                                👤 {{ item.posted_by.username }}
+
+                            </div>
+
+                            <p class="description">
+                                {{ item.description|truncatewords:20 }}
+                            </p>
+
+                            <span class="status">
+                                {{ item.status|title }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    📦
+                </div>
+
+                <h2>
+                    No Found Items Yet
+                </h2>
+
+                <p>
+                    There are currently no found item reports.
+                </p>
+
+                <a
+                    href="{% url 'report_item' %}"
+                    class="report-btn"
+                >
+                    Report a Found Item
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            <strong>CampusFind</strong>
+            — Lost & Found Campus Platform
+        </p>
+
+        <p style="margin-top: 8px;">
+            © 2026 CampusFind. All rights reserved.
+        </p>
+
+    </footer>
+
+</body>
+</html>
