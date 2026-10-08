@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ item.title }} - CampusFind</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+        }
+
+        .navbar {
+            background: #2563eb;
+            padding: 18px 40px;
+            color: white;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 25px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .item-image {
+            width: 100%;
+            max-height: 450px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: #f1f5f9;
+            margin-bottom: 25px;
+        }
+
+        .placeholder {
+            height: 250px;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 20px;
+            background: #2563eb;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .info {
+            margin: 12px 0;
+            font-size: 16px;
+        }
+
+        .description {
+            line-height: 1.7;
+            color: #444;
+        }
+
+        .claim-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 22px;
+            background: #16a34a;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .claim-btn:hover {
+            background: #15803d;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 25px;
+            text-decoration: none;
+            color: #2563eb;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <a href="{% url 'home' %}">
+        CampusFind
+    </a>
+
+    <a href="{% url 'lost_items' %}">
+        Lost Items
+    </a>
+
+    <a href="{% url 'found_items' %}">
+        Found Items
+    </a>
+
+    <a href="{% url 'smart_match' %}">
+        Smart Match
+    </a>
+
+</div>
+
+
+<div class="container">
+
+    {% if item.image %}
+
+        <img
+            src="{{ item.image.url }}"
+            class="item-image"
+            alt="{{ item.title }}"
+        >
+
+    {% else %}
+
+        <div class="placeholder">
+            📦
+        </div>
+
+    {% endif %}
+
+
+    {% if item.item_type == 'lost' %}
+
+        <span class="badge">
+            🔴 LOST
+        </span>
+
+    {% else %}
+
+        <span class="badge">
+            🟢 FOUND
+        </span>
+
+    {% endif %}
+
+
+    <h1>
+        {{ item.title }}
+    </h1>
+
+
+    <div class="info">
+        <strong>Category:</strong>
+        {{ item.category }}
+    </div>
+
+
+    <div class="info">
+        <strong>Location:</strong>
+        {{ item.location }}
+    </div>
+
+
+    <div class="info">
+        <strong>Date:</strong>
+        {{ item.date }}
+    </div>
+
+
+    <div class="info">
+        <strong>Posted by:</strong>
+        {{ item.posted_by.username }}
+    </div>
+
+
+    <div class="info">
+        <strong>Contact:</strong>
+        {{ item.contact }}
+    </div>
+
+
+    <div class="info">
+        <strong>Status:</strong>
+        {{ item.status|title }}
+    </div>
+
+
+    {% if item.item_type == 'found' and item.status == 'active' and user.is_authenticated and item.posted_by != user %}
+
+        <a
+    href="{% url 'claim_item' item.id %}"
+    class="claim-btn"
+>
+    🔐 Claim This Item
+</a>
+
+    {% endif %}
+
+
+    <hr>
+
+
+    <h3>
+        Description
+    </h3>
+
+
+    <p class="description">
+        {{ item.description }}
+    </p>
+
+
+    <a
+        href="{% url 'home' %}"
+        class="back"
+    >
+        ← Back to Home
+    </a>
+
+</div>
+
+</body>
+</html>
