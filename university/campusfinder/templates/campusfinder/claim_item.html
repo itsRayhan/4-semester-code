@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Claim {{ item.title }} - CampusFind</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+        }
+
+        .navbar {
+            background: #2563eb;
+            padding: 18px 40px;
+            color: white;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 25px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .item-name {
+            color: #2563eb;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            resize: vertical;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+        }
+
+        .submit-btn {
+            margin-top: 20px;
+            padding: 12px 22px;
+            border: none;
+            background: #16a34a;
+            color: white;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #15803d;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <a href="{% url 'home' %}">
+        CampusFind
+    </a>
+
+    <a href="{% url 'lost_items' %}">
+        Lost Items
+    </a>
+
+    <a href="{% url 'found_items' %}">
+        Found Items
+    </a>
+
+    <a href="{% url 'smart_match' %}">
+        Smart Match
+    </a>
+
+</div>
+
+
+<div class="container">
+
+    <h1>
+        🔐 Claim This Item
+    </h1>
+
+    <p class="item-name">
+        {{ item.title }}
+    </p>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <label>
+            Why do you think this item belongs to you?
+        </label>
+
+        <textarea
+            name="message"
+            placeholder="Explain identifying details about your item..."
+            required
+        ></textarea>
+
+        <br>
+
+        <button
+            type="submit"
+            class="submit-btn"
+        >
+            Submit Claim Request
+        </button>
+
+    </form>
+
+
+    <a
+        href="{% url 'item_detail' item.id %}"
+        class="back"
+    >
+        ← Back to Item
+    </a>
+
+</div>
+
+</body>
+</html>

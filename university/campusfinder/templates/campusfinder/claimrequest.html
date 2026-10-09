@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Claim Requests - CampusFind</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+        }
+
+        .navbar {
+            background: #2563eb;
+            padding: 18px 40px;
+            color: white;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 25px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+        }
+
+        .request-card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .item-title {
+            font-size: 21px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .message {
+            background: #f8fafc;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .pending {
+            color: #d97706;
+        }
+
+        .accepted {
+            color: #16a34a;
+        }
+
+        .rejected {
+            color: #dc2626;
+        }
+
+        .empty {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <a href="{% url 'home' %}">
+        CampusFind
+    </a>
+
+    <a href="{% url 'lost_items' %}">
+        Lost Items
+    </a>
+
+    <a href="{% url 'found_items' %}">
+        Found Items
+    </a>
+
+    <a href="{% url 'smart_match' %}">
+        Smart Match
+    </a>
+
+</div>
+
+
+<div class="container">
+
+    <h1>
+        📩 Claim Requests
+    </h1>
+
+
+    {% if requests %}
+
+        {% for request in requests %}
+
+            <div class="request-card">
+
+                <div class="item-title">
+                    📦 {{ request.item.title }}
+                </div>
+
+                <p>
+                    <strong>Claimed by:</strong>
+                    {{ request.claimant.username }}
+                </p>
+
+                <p>
+                    <strong>Date:</strong>
+                    {{ request.created_at|date:"d M Y, h:i A" }}
+                </p>
+
+                <div class="message">
+
+                    <strong>Claim Message:</strong>
+
+                    <p>
+                        {{ request.message }}
+                    </p>
+
+                </div>
+
+
+                <p class="status">
+
+                    Status:
+
+                    {% if request.status == 'pending' %}
+
+                        <span class="pending">
+                            ⏳ Pending
+                        </span>
+
+                    {% elif request.status == 'accepted' %}
+
+                        <span class="accepted">
+                            ✅ Accepted
+                        </span>
+
+                    {% else %}
+
+                        <span class="rejected">
+                            ❌ Rejected
+                        </span>
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+
+            <h2>No Claim Requests</h2>
+
+            <p>
+                Nobody has claimed your found items yet.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>
